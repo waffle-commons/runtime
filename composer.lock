@@ -226,10 +226,11 @@
             "dist": {
                 "type": "path",
                 "url": "../http",
-                "reference": "4cced95b1249b347d9d7906024dadba9adc74e83"
+                "reference": "f7ca080898d6537462e97d156213d2dcdb1cdcfc"
             },
             "require": {
                 "php": "^8.4",
+                "psr/http-factory": "^1.1",
                 "psr/http-message": "^2.0"
             },
             "require-dev": {
@@ -1862,12 +1863,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri.git",
-                "reference": "1d082c56289497aa003eb963b022f8cdd262ab81"
+                "reference": "f625804987a0a9112d954f9209d91fec52182344"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/1d082c56289497aa003eb963b022f8cdd262ab81",
-                "reference": "1d082c56289497aa003eb963b022f8cdd262ab81",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/f625804987a0a9112d954f9209d91fec52182344",
+                "reference": "f625804987a0a9112d954f9209d91fec52182344",
                 "shasum": ""
             },
             "require": {
@@ -1953,7 +1954,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-18T07:56:59+00:00"
+            "time": "2025-11-18T12:17:23+00:00"
         },
         {
             "name": "league/uri-interfaces",
@@ -1961,12 +1962,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri-interfaces.git",
-                "reference": "3edd27c3c7449fcdb6a6806dc4aa280cb2080fa9"
+                "reference": "ccbfb51c0445298e7e0b7f4481b942f589665368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/3edd27c3c7449fcdb6a6806dc4aa280cb2080fa9",
-                "reference": "3edd27c3c7449fcdb6a6806dc4aa280cb2080fa9",
+                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/ccbfb51c0445298e7e0b7f4481b942f589665368",
+                "reference": "ccbfb51c0445298e7e0b7f4481b942f589665368",
                 "shasum": ""
             },
             "require": {
@@ -2038,7 +2039,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-07T20:15:47+00:00"
+            "time": "2025-11-18T12:17:23+00:00"
         },
         {
             "name": "myclabs/deep-copy",
