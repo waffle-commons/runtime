@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Commons\Runtime;
 
 use Waffle\Commons\Http\Emitter\ResponseEmitter;
-use Waffle\Commons\Http\Factory\RequestFactory;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Interface\KernelInterface;
 
 class WaffleRuntime implements RuntimeInterface
@@ -20,7 +20,7 @@ class WaffleRuntime implements RuntimeInterface
     public function run(KernelInterface $kernel): void
     {
         // 1. Create the request from PHP globals (POST, GET, etc.)
-        $factory = new RequestFactory();
+        $factory = new GlobalsFactory();
         $request = $factory->createFromGlobals();
 
         // 2. Handle the request via the Kernel
