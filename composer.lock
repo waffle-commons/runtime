@@ -292,7 +292,7 @@
             "authors": [
                 {
                     "name": "Leslie Petrimaux",
-                    "email": "leslie@eightyfour.ovh"
+                    "email": "contact@waffle-commons.cloud"
                 }
             ],
             "description": "Http component for Waffle framework.",
@@ -379,7 +379,7 @@
             "authors": [
                 {
                     "name": "Leslie Petrimaux",
-                    "email": "leslie@eightyfour.ovh"
+                    "email": "contact@waffle-commons.cloud"
                 }
             ],
             "description": "A modern, minimalist, and security-focused PHP micro-framework.",
