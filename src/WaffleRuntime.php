@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Commons\Runtime;
 
+use Waffle\Commons\Container\Container;
 use Waffle\Commons\Http\Emitter\ResponseEmitter;
 use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Interface\KernelInterface;
@@ -11,22 +12,27 @@ use Waffle\Interface\KernelInterface;
 class WaffleRuntime implements RuntimeInterface
 {
     /**
-     * Orchestrates the request lifecycle.
-     *
-     * 1. Creates a PSR-7 ServerRequest from globals.
-     * 2. Passes the request to the Kernel to get a Response.
-     * 3. Emits the response to the client.
+     * Orchestrates the application execution lifecycle.
      */
     public function run(KernelInterface $kernel): void
     {
-        // 1. Create the request from PHP globals (POST, GET, etc.)
+        // 1. Dependency Injection Setup
+        // Instantiate the concrete PSR-11 container from waffle-commons/container
+        $container = new Container();
+
+        // Inject it into the Kernel. The Kernel will wrap it with security.
+        if (method_exists($kernel, 'setContainerImplementation')) {
+            $kernel->setContainerImplementation($container);
+        }
+
+        // 2. Create Request
         $factory = new GlobalsFactory();
         $request = $factory->createFromGlobals();
 
-        // 2. Handle the request via the Kernel
+        // 3. Handle Request via Kernel
         $response = $kernel->handle($request);
 
-        // 3. Emit the response headers and body
+        // 4. Emit Response
         $emitter = new ResponseEmitter();
         $emitter->emit($response);
     }
