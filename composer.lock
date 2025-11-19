@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68c7e8a5c89f9ee0fe657e73055d16ec",
+    "content-hash": "91060194989f0c636e551294a71fde1c",
     "packages": [
         {
             "name": "psr/container",
@@ -226,7 +226,7 @@
             "dist": {
                 "type": "path",
                 "url": "../container",
-                "reference": "e341c0b11ce970b856bece686185dc1b5d1b5ee8"
+                "reference": "a1aff8b77290f2efa7b53885c2ce7ebd44071f5d"
             },
             "require": {
                 "php": "^8.4",
@@ -306,7 +306,7 @@
             "dist": {
                 "type": "path",
                 "url": "../http",
-                "reference": "f03a2698d08b6c599646b9940e47ab93753224bf"
+                "reference": "16dd66fd90e1c4bb2d7033ce2b3b294159a16310"
             },
             "require": {
                 "php": "^8.4",
@@ -387,7 +387,7 @@
             "dist": {
                 "type": "path",
                 "url": "../waffle",
-                "reference": "5708c3f949d113b19503d755f5414c5e37cb9bda"
+                "reference": "2c0c9ab17d5aa4f72bd5aef06941e1841fea81a6"
             },
             "require": {
                 "php": "^8.4",
