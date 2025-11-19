@@ -1,0 +1,94 @@
+[[entries."src/WaffleRuntime.php".issues]]
+code = "impossible-assignment"
+start_line = 20
+end_line = 20
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "impossible-assignment"
+start_line = 28
+end_line = 28
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "impossible-assignment"
+start_line = 35
+end_line = 35
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "invalid-argument"
+start_line = 23
+end_line = 23
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "invalid-method-access"
+start_line = 24
+end_line = 24
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "invalid-method-access"
+start_line = 32
+end_line = 32
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "missing-override-attribute"
+start_line = 16
+end_line = 16
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "mixed-assignment"
+start_line = 29
+end_line = 29
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "mixed-assignment"
+start_line = 32
+end_line = 32
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "non-existent-class"
+start_line = 20
+end_line = 20
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "non-existent-class"
+start_line = 28
+end_line = 28
+
+[[entries."src/WaffleRuntime.php".issues]]
+code = "non-existent-class"
+start_line = 35
+end_line = 35
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "invalid-argument"
+start_line = 53
+end_line = 53
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "mixed-method-access"
+start_line = 30
+end_line = 30
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "mixed-method-access"
+start_line = 31
+end_line = 31
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "mixed-method-access"
+start_line = 32
+end_line = 32
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "non-existent-class"
+start_line = 32
+end_line = 32
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "non-existent-class-like"
+start_line = 28
+end_line = 28
+
+[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+code = "unused-parameter"
+start_line = 61
+end_line = 61

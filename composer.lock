@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c107564f22a763f524aad29b3ef5825",
+    "content-hash": "68c7e8a5c89f9ee0fe657e73055d16ec",
     "packages": [
         {
             "name": "psr/container",
@@ -221,12 +221,92 @@
             "time": "2024-09-11T13:17:53+00:00"
         },
         {
+            "name": "waffle-commons/container",
+            "version": "1.0.0-dev",
+            "dist": {
+                "type": "path",
+                "url": "../container",
+                "reference": "e341c0b11ce970b856bece686185dc1b5d1b5ee8"
+            },
+            "require": {
+                "php": "^8.4",
+                "psr/container": "^2.0"
+            },
+            "require-dev": {
+                "carthage-software/mago": "^1.0.0-beta.31",
+                "php-mock/php-mock-phpunit": "^2.13",
+                "phpunit/phpunit": "^12.0",
+                "vimeo/psalm": "^6.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Waffle\\Commons\\Container\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Container\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leslie Petrimaux",
+                    "email": "contact@waffle-commons.cloud"
+                }
+            ],
+            "description": "Container component for Waffle framework.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "waffle-commons/http",
             "version": "1.0.0-dev",
             "dist": {
                 "type": "path",
                 "url": "../http",
-                "reference": "f7ca080898d6537462e97d156213d2dcdb1cdcfc"
+                "reference": "f03a2698d08b6c599646b9940e47ab93753224bf"
             },
             "require": {
                 "php": "^8.4",
@@ -307,7 +387,7 @@
             "dist": {
                 "type": "path",
                 "url": "../waffle",
-                "reference": "3d11eb10534ba8035fd6904d53e831fbb0ca79a1"
+                "reference": "5708c3f949d113b19503d755f5414c5e37cb9bda"
             },
             "require": {
                 "php": "^8.4",
@@ -320,7 +400,9 @@
                 "carthage-software/mago": "^1.0.0-beta.31",
                 "php-mock/php-mock-phpunit": "^2.13",
                 "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
+                "vimeo/psalm": "^6.13",
+                "waffle-commons/container": "dev-feature/+1-psr_implementation",
+                "waffle-commons/http": "dev-feature/+1-psr_implementation"
             },
             "type": "library",
             "autoload": {
@@ -334,16 +416,6 @@
                 }
             },
             "scripts": {
-                "post-install-cmd": [
-                    "@post-cmd"
-                ],
-                "post-update-cmd": [
-                    "@post-cmd"
-                ],
-                "post-cmd": [
-                    "mkdir -p var/cache",
-                    "chmod -R 777 var/cache"
-                ],
                 "formatter": [
                     "vendor/bin/mago fmt"
                 ],
@@ -371,6 +443,12 @@
                 "scan": [
                     "@mago",
                     "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
                 ]
             },
             "license": [
@@ -2662,12 +2740,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "431c02da15e566adb0ad9c5030fa6f6204d9de9e"
+                "reference": "09f6c69da99ab81836f99d47731c311f14aed8c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/431c02da15e566adb0ad9c5030fa6f6204d9de9e",
-                "reference": "431c02da15e566adb0ad9c5030fa6f6204d9de9e",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/09f6c69da99ab81836f99d47731c311f14aed8c7",
+                "reference": "09f6c69da99ab81836f99d47731c311f14aed8c7",
                 "shasum": ""
             },
             "require": {
@@ -2713,7 +2791,7 @@
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.x"
             },
-            "time": "2025-11-18T07:51:16+00:00"
+            "time": "2025-11-19T07:30:11+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -2769,12 +2847,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "9a5ff2a1a41dca1fe141c561dda3f9b89af42568"
+                "reference": "6cda094664473bc2ee54f9fe3d30e86c3206695d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9a5ff2a1a41dca1fe141c561dda3f9b89af42568",
-                "reference": "9a5ff2a1a41dca1fe141c561dda3f9b89af42568",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6cda094664473bc2ee54f9fe3d30e86c3206695d",
+                "reference": "6cda094664473bc2ee54f9fe3d30e86c3206695d",
                 "shasum": ""
             },
             "require": {
@@ -2851,7 +2929,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-11-16T10:17:40+00:00"
+            "time": "2025-11-19T07:00:51+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -5500,6 +5578,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "waffle-commons/container": 20,
         "waffle-commons/http": 20,
         "waffle-commons/waffle": 20
     },

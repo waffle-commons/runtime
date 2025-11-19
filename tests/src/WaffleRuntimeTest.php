@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace WaffleTests\Commons\Runtime;
 
-use Waffle\Commons\Http\ServerRequest;
+use Waffle\Commons\Http\Emitter\ResponseEmitter;
 use Waffle\Commons\Http\Response;
+use Waffle\Commons\Http\ServerRequest;
 use Waffle\Commons\Http\Uri;
 use Waffle\Commons\Runtime\WaffleRuntime;
 use Waffle\Interface\KernelInterface;
-use Waffle\Commons\Http\Emitter\ResponseEmitter;
 
 // We need to mock the emit function or the Emitter class to avoid sending headers in CLI
 // Since ResponseEmitter is instantiated inside WaffleRuntime, we might need to use
@@ -26,7 +26,8 @@ class WaffleRuntimeTest extends AbstractTestCase
         $kernelMock = $this->createMock(KernelInterface::class);
 
         // We expect the Kernel to handle a request and return a response
-        $kernelMock->expects($this->once())
+        $kernelMock
+            ->expects($this->once())
             ->method('handle')
             ->with($this->isInstanceOf(\Psr\Http\Message\ServerRequestInterface::class))
             ->willReturn(new Response(200, [], 'OK'));
@@ -58,9 +59,14 @@ class WaffleRuntimeTest extends AbstractTestCase
 namespace Waffle\Commons\Http\Emitter;
 
 if (!function_exists('Waffle\Commons\Http\Emitter\header')) {
-    function header($string, $replace = true, $http_response_code = null) {}
+    function header($string, $replace = true, $http_response_code = null)
+    {
+    }
 }
 
 if (!function_exists('Waffle\Commons\Http\Emitter\headers_sent')) {
-    function headers_sent() { return false; }
+    function headers_sent()
+    {
+        return false;
+    }
 }
