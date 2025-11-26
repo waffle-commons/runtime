@@ -6,8 +6,37 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/waffle-commons/runtime.svg)](https://packagist.org/packages/waffle-commons/runtime)
 [![Packagist License](https://img.shields.io/packagist/l/waffle-commons/runtime)](https://github.com/waffle-commons/runtime/blob/main/LICENSE.md)
 
-Waffle Commons - Runtime Component
-==================================
+Waffle Runtime Component
+========================
+
+The "Glue" of the Waffle Framework. It bootstraps the application by connecting the HTTP layer, the Container, and the Core Kernel.
+
+## 📦 Installation
+
+```bash
+composer require waffle-commons/runtime
+```
+
+## 🚀 Usage
+
+The Runtime is typically used in your application's entry point (`public/index.php`).
+
+```php
+use Waffle\Commons\Runtime\WaffleRuntime;
+use App\Kernel;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// 1. Instantiate your Application Kernel
+$kernel = new Kernel();
+
+// 2. Instantiate the Runtime
+$runtime = new WaffleRuntime();
+
+// 3. Run the application
+// This handles the request, executes the kernel, and emits the response.
+$runtime->run($kernel);
+```
 
 The **Runtime** component is the orchestrator of the Waffle Framework. It acts as the "glue" between the low-level components (HTTP, Container) and the framework Core (Kernel).
 

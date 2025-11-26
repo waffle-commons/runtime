@@ -10,20 +10,10 @@ end_line = 20
 
 [[entries."tests/src/WaffleRuntimeTest.php".issues]]
 code = "assertion-style"
-start_line = 31
-end_line = 31
+start_line = 53
+end_line = 53
 
 [[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "no-redundant-use"
-start_line = 6
-end_line = 6
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "no-redundant-use"
-start_line = 8
-end_line = 8
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "no-redundant-use"
-start_line = 9
-end_line = 9
+code = "assertion-style"
+start_line = 60
+end_line = 60

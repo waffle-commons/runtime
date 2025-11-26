@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf3b82b98a2bd9fb44eeea886994ef05",
+    "content-hash": "9d8352b69bd5320945f4e56002f228cf",
     "packages": [
         {
             "name": "psr/cache",
@@ -157,61 +157,6 @@
                 "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
             },
             "time": "2019-01-08T18:20:26+00:00"
-        },
-        {
-            "name": "psr/http-factory",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
-                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1",
-                "psr/http-message": "^1.0 || ^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
-            "keywords": [
-                "factory",
-                "http",
-                "message",
-                "psr",
-                "psr-17",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/http-factory"
-            },
-            "time": "2024-04-15T12:06:14+00:00"
         },
         {
             "name": "psr/http-message",
@@ -373,65 +318,12 @@
             "time": "2024-09-11T13:17:53+00:00"
         },
         {
-            "name": "waffle-commons/container",
-            "version": "0.1.0-alpha1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/container.git",
-                "reference": "8ab83da83367b8a60f1f7bdc83ca52a543a80ad0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/container/zipball/8ab83da83367b8a60f1f7bdc83ca52a543a80ad0",
-                "reference": "8ab83da83367b8a60f1f7bdc83ca52a543a80ad0",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/container": "^2.0"
-            },
-            "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
-                "php-mock/php-mock-phpunit": "^2.13",
-                "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Waffle\\Commons\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Leslie Petrimaux",
-                    "email": "contact@waffle-commons.cloud"
-                }
-            ],
-            "description": "Container component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/container/issues",
-                "source": "https://github.com/waffle-commons/container/tree/0.1.0-alpha1"
-            },
-            "time": "2025-11-25T12:45:24+00:00"
-        },
-        {
             "name": "waffle-commons/contracts",
-            "version": "0.1.0-alpha1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4"
-            },
+            "version": "1.0.0-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
-                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
-                "shasum": ""
+                "type": "path",
+                "url": "../contracts",
+                "reference": "683e048ba46327dd739902bbbda314582b55787d"
             },
             "require": {
                 "php": "^8.4",
@@ -454,7 +346,47 @@
                     "Waffle\\Commons\\Contracts\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Contracts\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -465,109 +397,10 @@
                 }
             ],
             "description": "Contracts component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/contracts/issues",
-                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha1"
-            },
-            "time": "2025-11-26T13:10:28+00:00"
-        },
-        {
-            "name": "waffle-commons/http",
-            "version": "0.1.0-alpha1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/http.git",
-                "reference": "bb0b661c3e17ac965aadace0df94c403fcc5a879"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/http/zipball/bb0b661c3e17ac965aadace0df94c403fcc5a879",
-                "reference": "bb0b661c3e17ac965aadace0df94c403fcc5a879",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
-                "php-mock/php-mock-phpunit": "^2.13",
-                "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Waffle\\Commons\\Http\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Leslie Petrimaux",
-                    "email": "contact@waffle-commons.cloud"
-                }
-            ],
-            "description": "Http component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/http/issues",
-                "source": "https://github.com/waffle-commons/http/tree/0.1.0-alpha1"
-            },
-            "time": "2025-11-25T12:43:47+00:00"
-        },
-        {
-            "name": "waffle-commons/waffle",
-            "version": "0.1.0-alpha2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/waffle.git",
-                "reference": "f7b0aa12d489d4e5d2a96253168df300da50b39a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/waffle/zipball/f7b0aa12d489d4e5d2a96253168df300da50b39a",
-                "reference": "f7b0aa12d489d4e5d2a96253168df300da50b39a",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/container": "^2.0",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0",
-                "psr/log": "^3.0"
-            },
-            "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
-                "php-mock/php-mock-phpunit": "^2.13",
-                "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Waffle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Leslie Petrimaux",
-                    "email": "contact@waffle-commons.cloud"
-                }
-            ],
-            "description": "A modern, minimalist, and security-focused PHP micro-framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/waffle/issues",
-                "source": "https://github.com/waffle-commons/waffle/tree/0.1.0-alpha2"
-            },
-            "time": "2025-11-25T12:47:10+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         }
     ],
     "packages-dev": [
@@ -3354,6 +3187,61 @@
             "time": "2025-11-21T07:39:11+00:00"
         },
         {
+            "name": "psr/http-factory",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-factory.git",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
+            "keywords": [
+                "factory",
+                "http",
+                "message",
+                "psr",
+                "psr-17",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-factory"
+            },
+            "time": "2024-04-15T12:06:14+00:00"
+        },
+        {
             "name": "revolt/event-loop",
             "version": "v1.0.7",
             "source": {
@@ -5498,7 +5386,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "waffle-commons/contracts": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
