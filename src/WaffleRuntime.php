@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Waffle\Commons\Runtime;
 
 use Waffle\Commons\Container\Container;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
 use Waffle\Commons\Http\Emitter\ResponseEmitter;
 use Waffle\Commons\Http\Factory\GlobalsFactory;
-use Waffle\Interface\KernelInterface;
 
 class WaffleRuntime implements RuntimeInterface
 {

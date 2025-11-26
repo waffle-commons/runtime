@@ -9,7 +9,7 @@ use Waffle\Commons\Http\Response;
 use Waffle\Commons\Http\ServerRequest;
 use Waffle\Commons\Http\Uri;
 use Waffle\Commons\Runtime\WaffleRuntime;
-use Waffle\Interface\KernelInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
 
 // We need to mock the emit function or the Emitter class to avoid sending headers in CLI
 // Since ResponseEmitter is instantiated inside WaffleRuntime, we might need to use
