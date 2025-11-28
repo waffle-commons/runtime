@@ -2,44 +2,8 @@ variant = "loose"
 
 [[issues]]
 file = "src/WaffleRuntime.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Commons\Runtime\WaffleRuntime` cannot implement unknown type `RuntimeInterface`'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Commons\Runtime\WaffleRuntime::run`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but found `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`.'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #3 of `Waffle\Commons\Runtime\WaffleRuntime::run`: expected `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`, but found `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`.'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`).'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`).'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$emitter`: expected `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Http\ResponseEmitterInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$kernel`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Core\KernelInterface`.'
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `Waffle\Commons\Runtime\WaffleRuntime::run`.'
 count = 1
 
 [[issues]]
@@ -47,9 +11,3 @@ file = "tests/src/WaffleRuntimeTest.php"
 code = "missing-override-attribute"
 message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Commons\Runtime\WaffleRuntimeTest::setUp`.'
 count = 1
-
-[[issues]]
-file = "tests/src/WaffleRuntimeTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
