@@ -9,7 +9,7 @@
 Waffle Runtime Component
 ========================
 
-The "Glue" of the Waffle Framework. It bootstraps the application by connecting the HTTP layer, the Container, and the Core Kernel.
+The **Waffle Runtime** is the agnostic orchestration layer of the Waffle framework. It is responsible for gluing the **Kernel**, **Request**, and **Response Emitter** together to execute the application lifecycle.
 
 ## 📦 Installation
 
@@ -21,113 +21,87 @@ composer require waffle-commons/runtime
 
 The Runtime is typically used in your application's entry point (`public/index.php`).
 
-```php
-use Waffle\Commons\Runtime\WaffleRuntime;
-use App\Kernel;
+It requires a fully configured `KernelInterface`, a `ServerRequestInterface`, and a `ResponseEmitterInterface`.
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-// 1. Instantiate your Application Kernel
-$kernel = new Kernel();
-
-// 2. Instantiate the Runtime
-$runtime = new WaffleRuntime();
-
-// 3. Run the application
-// This handles the request, executes the kernel, and emits the response.
-$runtime->run($kernel);
-```
-
-The **Runtime** component is the orchestrator of the Waffle Framework. It acts as the "glue" between the low-level components (HTTP, Container) and the framework Core (Kernel).
-
-Its primary responsibility is to manage the request lifecycle: creating the request from global state, booting the kernel with the necessary dependencies, handling the request, and emitting the response to the client.
-
-Features
---------
-
-*   **Lifecycle Orchestration:** Manages the full flow from Request creation to Response emission.
-
-*   **Dependency Injection Integration:** Automatically instantiates and injects the PSR-11 Container implementation into the Kernel.
-
-*   **PSR-7 / PSR-17 Integration:** Uses the HTTP component factories to create standard ServerRequest objects.
-
-*   **Response Emission:** Uses the ResponseEmitter to send headers and body content to the output buffer.
-
-
-Installation
-------------
-
-You can install the package via Composer. Note that this package typically requires the core and other components.
-
-```shell
-composer require waffle-commons/runtime
-```
-
-Usage
------
-
-The Runtime is designed to be used in your application's entry point (usually `public/index.php`).
-
-### 1\. Standard Usage
-
-In your `index.php` file, you simply need to instantiate your Kernel and the Runtime, then call `run()`.
+### Example (`public/index.php`)
 
 ```php
 <?php
 
 declare(strict_types=1);
 
+use Waffle\Commons\Config\Config;
+use Waffle\Commons\Container\Container;
+use Waffle\Commons\Http\Emitter\ResponseEmitter;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Commons\Runtime\WaffleRuntime;
-use App\Kernel; // Your application's Kernel extending Waffle\Kernel
+use Waffle\Commons\Security\Security;
+use App\Kernel; // Your application Kernel
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Define the application root constant
 define('APP_ROOT', dirname(__DIR__));
 
-// Instantiate the Kernel
+// 1. Setup Infrastructure Dependencies
+// ------------------------------------
+// Create the Config (pointing to your config directory)
+$config = new Config(
+    configDir: APP_ROOT . '/config',
+    environment: getenv('APP_ENV') ?: 'prod'
+);
+
+// Create the Security implementation
+$security = new Security($config);
+
+// Create the DI Container
+$container = new Container();
+
+// 2. Setup the Kernel
+// -------------------
 $kernel = new Kernel();
 
-// Instantiate the Runtime
+// Inject dependencies into the Kernel
+// (The Kernel needs these to boot and configure the system)
+$kernel->setConfiguration($config);
+$kernel->setSecurity($security);
+$kernel->setContainerImplementation($container);
+
+// 3. Create Request & Emitter
+// ---------------------------
+$requestFactory = new GlobalsFactory();
+$request = $requestFactory->createServerRequestFromGlobals();
+
+$emitter = new ResponseEmitter();
+
+// 4. Instantiate the Runtime
+// --------------------------
 $runtime = new WaffleRuntime();
 
-// Run the application
-// This will:
-// 1. Initialize the DI Container
-// 2. Create a PSR-7 Request from globals
-// 3. Boot and Configure the Kernel
-// 4. Dispatch the Request to the Router/Controller
-// 5. Emit the final Response to the browser
-$runtime->run($kernel);
+// 5. Run the Application
+// ----------------------
+// The Runtime orchestrates the flow:
+// Request -> Kernel -> Response -> Emitter
+$runtime->run($kernel, $request, $emitter);
 ```
 
-Architecture
-------------
+## Features
 
-The Runtime component decouples the Core from specific implementations of "infrastructure" concerns.
+*   **Agnostic Execution**: The Runtime doesn't know about your controllers or business logic. It only deals with PSR interfaces.
+*   **Decoupled Architecture**: Forces a clean separation between the Application (Kernel), the Input (Request), and the Output (Emitter).
+*   **PSR-7 & PSR-15 Compliant**: Built on top of standard HTTP message interfaces.
 
-*   **Input:** It uses `Waffle\Commons\Http\Factory\GlobalsFactory` to create a ServerRequestInterface.
+## Testing
 
-*   **Processing:** It delegates the business logic to `KernelInterface::handle($request)`.
+To run the tests, use the following command:
 
-*   **Dependencies:** It provides `Waffle\Commons\Container\Container` as the PSR-11 implementation for the Kernel.
+```bash
+composer tests
+```
 
-*   **Output:** It uses `Waffle\Commons\Http\Emitter\ResponseEmitter` to send the ResponseInterface.
-
-
-This design allows the Core Kernel to remain agnostic of how requests are created or sent, making it easier to test or run in different contexts (like CLI or long-running processes).
-
-Testing
--------
-
-This component is tested via integration tests within the Waffle Workspace.
-
-Contributing
-------------
+## Contributing
 
 Contributions are welcome! Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
-License
--------
+## License
 
 This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
