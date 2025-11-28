@@ -1,59 +1,55 @@
-[[entries."src/WaffleRuntime.php".issues]]
+variant = "loose"
+
+[[issues]]
+file = "src/WaffleRuntime.php"
 code = "non-existent-class-like"
-start_line = 21
-end_line = 21
+message = 'Class `Waffle\Commons\Runtime\WaffleRuntime` cannot implement unknown type `RuntimeInterface`'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "invalid-argument"
-start_line = 63
-end_line = 63
+message = 'Invalid argument type for argument #1 of `Waffle\Commons\Runtime\WaffleRuntime::run`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but found `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`.'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #3 of `Waffle\Commons\Runtime\WaffleRuntime::run`: expected `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`, but found `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`.'
+count = 1
+
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "invalid-method-access"
-start_line = 51
-end_line = 51
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`).'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "invalid-method-access"
-start_line = 58
-end_line = 58
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`).'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "invalid-property-assignment-value"
-start_line = 34
-end_line = 34
+message = 'Invalid type for property `$emitter`: expected `unknown-ref(Waffle\Commons\Contracts\Http\ResponseEmitterInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Http\ResponseEmitterInterface`.'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "invalid-property-assignment-value"
-start_line = 36
-end_line = 36
+message = 'Invalid type for property `$kernel`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Core\KernelInterface`.'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "missing-override-attribute"
-start_line = 29
-end_line = 29
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Commons\Runtime\WaffleRuntimeTest::setUp`.'
+count = 1
 
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
 code = "mixed-method-access"
-start_line = 52
-end_line = 52
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "mixed-method-access"
-start_line = 53
-end_line = 53
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "mixed-method-access"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "mixed-method-access"
-start_line = 59
-end_line = 59
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "mixed-method-access"
-start_line = 60
-end_line = 60
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 5
