@@ -1,14 +1,13 @@
-[[entries."src/WaffleRuntime.php".issues]]
+variant = "loose"
+
+[[issues]]
+file = "src/WaffleRuntime.php"
 code = "missing-override-attribute"
-start_line = 16
-end_line = 16
+message = 'Missing `#[Override]` attribute on overriding method `Waffle\Commons\Runtime\WaffleRuntime::run`.'
+count = 1
 
-[[entries."src/WaffleRuntime.php".issues]]
-code = "non-existent-method"
-start_line = 24
-end_line = 24
-
-[[entries."tests/src/WaffleRuntimeTest.php".issues]]
-code = "unused-parameter"
-start_line = 61
-end_line = 61
+[[issues]]
+file = "tests/src/WaffleRuntimeTest.php"
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Commons\Runtime\WaffleRuntimeTest::setUp`.'
+count = 1
