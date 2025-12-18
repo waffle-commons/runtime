@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4cd1988913e123e4ae4101561ddd65e",
+    "content-hash": "64eece7537f50a7133879390c295441b",
     "packages": [
         {
             "name": "psr/cache",
@@ -5354,7 +5354,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "carthage-software/mago": 10,
+        "carthage-software/mago": 5,
         "waffle-commons/contracts": 15
     },
     "prefer-stable": false,
