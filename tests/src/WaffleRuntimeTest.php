@@ -33,7 +33,7 @@ class WaffleRuntimeTest extends AbstractTestCase
 
         // Create mocks for all dependencies
         $this->kernel = $this->createMock(KernelInterface::class);
-        $this->request = $this->createMock(ServerRequestInterface::class);
+        $this->request = $this->createStub(ServerRequestInterface::class);
         $this->emitter = $this->createMock(ResponseEmitterInterface::class);
 
         // Instantiate the runtime
@@ -45,7 +45,7 @@ class WaffleRuntimeTest extends AbstractTestCase
         // 1. Setup Expectations
 
         // Dummy response object to be returned by the kernel
-        $response = $this->createMock(ResponseInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
 
         // Expect the Kernel to handle the specific request and return our dummy response
         $this->kernel
