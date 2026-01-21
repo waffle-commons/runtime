@@ -1,6 +1,12 @@
 variant = "loose"
 
 [[issues]]
+file = "src/WaffleRuntime.php"
+code = "unimplemented-abstract-method"
+message = 'Class `Waffle\Commons\Runtime\WaffleRuntime` does not implement the abstract method `run`.'
+count = 1
+
+[[issues]]
 file = "tests/src/WaffleRuntimeTest.php"
 code = "property-type-coercion"
 message = 'A value of a less specific type `Psr\Http\Message\ServerRequestInterface&PHPUnit\Framework\MockObject\Stub` is being assigned to property `$$request` (Psr\Http\Message\ServerRequestInterface&PHPUnit\Framework\MockObject\MockObject).'
