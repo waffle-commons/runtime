@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Waffle\Commons\Runtime;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Http\ResponseEmitterInterface;
 use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
@@ -72,5 +71,7 @@ final class WaffleRuntime implements RuntimeInterface
                 gc_collect_cycles();
             }
         } while ($requestCount < $maxRequests);
+
+        $kernel->reset();
     }
 }

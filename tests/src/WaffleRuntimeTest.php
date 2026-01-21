@@ -82,5 +82,7 @@ class WaffleRuntimeTest extends AbstractTestCase
         // 3. Execution
         // Since we are not in FrankenPHP (function doesn't exist), it executes once and breaks.
         $this->runtime->loop($this->kernel);
+
+        $this->kernel->reset();
     }
 }
