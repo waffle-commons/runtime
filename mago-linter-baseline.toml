@@ -1,12 +1,6 @@
 variant = "loose"
 
 [[issues]]
-file = "src/WaffleRuntime.php"
-code = "no-redundant-use"
-message = "Unused import: `ServerRequestInterface`."
-count = 1
-
-[[issues]]
 file = "tests/src/AbstractTestCase.php"
 code = "no-redundant-method-override"
 message = "Redundant method override."

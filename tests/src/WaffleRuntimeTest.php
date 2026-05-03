@@ -48,20 +48,14 @@ class WaffleRuntimeTest extends AbstractTestCase
     public function testLoopOrchestratesRequestLifecycleCorrectly(): void
     {
         // 1. Setup Expectations for Boot (Called Once)
-        $this->kernel
-            ->expects($this->once())
-            ->method('boot')
-            ->willReturnSelf();
+        $this->kernel->expects($this->once())->method('boot')->willReturnSelf();
 
         $this->kernel->expects($this->once())->method('configure');
 
         // 2. Setup Expectations for Loop (Called Once in CLI fallback)
 
         // Factory creates the request
-        $this->globalsFactory
-            ->expects($this->once())
-            ->method('createFromGlobals')
-            ->willReturn($this->request);
+        $this->globalsFactory->expects($this->once())->method('createFromGlobals')->willReturn($this->request);
 
         // Dummy response object
         $response = $this->createStub(ResponseInterface::class);
@@ -74,10 +68,7 @@ class WaffleRuntimeTest extends AbstractTestCase
             ->willReturn($response);
 
         // Emitter emits the response
-        $this->emitter
-            ->expects($this->once())
-            ->method('emit')
-            ->with($this->equalTo($response));
+        $this->emitter->expects($this->once())->method('emit')->with($this->equalTo($response));
 
         // 3. Execution
         // Since we are not in FrankenPHP (function doesn't exist), it executes once and breaks.

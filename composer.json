@@ -1,6 +1,6 @@
 {
     "name": "waffle-commons/runtime",
-    "version": "0.1.0-alpha4",
+    "version": "0.1.0-alpha5",
     "description": "Runtime component for Waffle framework.",
     "type": "library",
     "license": "MIT",
