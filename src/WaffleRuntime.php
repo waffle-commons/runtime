@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Waffle\Commons\Runtime;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Http\ResponseEmitterInterface;
 use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
+use Waffle\Commons\Http\Emitter\ResponseEmitter;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 
 /**
  * WaffleRuntime is a purely agnostic application runner.
@@ -21,20 +22,56 @@ use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
  */
 final class WaffleRuntime implements RuntimeInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function run(
-        KernelInterface $kernel,
-        ServerRequestInterface $request,
-        ResponseEmitterInterface $emitter,
-    ): void {
-        // 1. Handle the request via the Kernel
-        // The Kernel is responsible for routing and controller execution.
-        $response = $kernel->handle($request);
+    private GlobalsFactory $globalsFactory;
+    private ResponseEmitterInterface $emitter;
 
-        // 2. Emit the response
-        // Delegates the output logic (headers, echo body) to the emitter implementation.
-        $emitter->emit($response);
+    public function __construct(?GlobalsFactory $globalsFactory = null, ?ResponseEmitterInterface $emitter = null)
+    {
+        $this->globalsFactory = $globalsFactory ?? new GlobalsFactory();
+        $this->emitter = $emitter ?? new ResponseEmitter();
+    }
+
+    public function loop(KernelInterface $kernel, int $maxRequests = 500): void
+    {
+        // 1. Boot Once: Initialize the kernel (Container, Config, Routes)
+        // This happens only once when the worker starts.
+        $kernel->boot()->configure();
+
+        $requestCount = 0;
+
+        // 2. Loop Many: Process incoming requests
+        do {
+            // Prepare the handler logic
+            $handler = function () use ($kernel) {
+                // B. Create a fresh Request object from the updated superglobals
+                $request = $this->globalsFactory->createFromGlobals();
+
+                // C. Handle the request via the Kernel (Hot path)
+                $response = $kernel->handle($request);
+
+                // D. Emit the response to the client
+                $this->emitter->emit($response);
+            };
+
+            // A. FrankenPHP: Pause execution and wait for a request
+            $running = \function_exists('frankenphp_handle_request') ? \frankenphp_handle_request($handler) : false; // If function missing, we are not in worker mode -> Exit
+
+            // Fallback: If not running under FrankenPHP worker, execute once and break
+            if (!\function_exists('frankenphp_handle_request')) {
+                $handler();
+                break;
+            }
+
+            if (!$running) {
+                break;
+            }
+
+            // E. Cleanup & Garbage Collection
+            if ((++$requestCount % 50) === 0) {
+                gc_collect_cycles();
+            }
+        } while ($requestCount < $maxRequests);
+
+        $kernel->reset();
     }
 }

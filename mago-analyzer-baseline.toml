@@ -15,7 +15,7 @@ count = 1
 [[issues]]
 file = "tests/src/WaffleRuntimeTest.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testRunOrchestratesRequestLifecycleCorrectly`.'
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testLoopOrchestratesRequestLifecycleCorrectly`.'
 count = 1
 
 [[issues]]
@@ -27,7 +27,7 @@ count = 1
 [[issues]]
 file = "tests/src/WaffleRuntimeTest.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testRunOrchestratesRequestLifecycleCorrectly`.'
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testLoopOrchestratesRequestLifecycleCorrectly`.'
 count = 1
 
 [[issues]]
@@ -39,5 +39,5 @@ count = 1
 [[issues]]
 file = "tests/src/WaffleRuntimeTest.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testRunOrchestratesRequestLifecycleCorrectly`.'
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Commons\Runtime\WaffleRuntimeTest::testLoopOrchestratesRequestLifecycleCorrectly`.'
 count = 1

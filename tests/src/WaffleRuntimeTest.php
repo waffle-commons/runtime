@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Http\ResponseEmitterInterface;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Commons\Runtime\WaffleRuntime;
 
 /**
@@ -27,6 +28,9 @@ class WaffleRuntimeTest extends AbstractTestCase
     /** @var ResponseEmitterInterface&MockObject */
     private $emitter;
 
+    /** @var GlobalsFactory&MockObject */
+    private $globalsFactory;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -35,32 +39,41 @@ class WaffleRuntimeTest extends AbstractTestCase
         $this->kernel = $this->createMock(KernelInterface::class);
         $this->request = $this->createStub(ServerRequestInterface::class);
         $this->emitter = $this->createMock(ResponseEmitterInterface::class);
+        $this->globalsFactory = $this->createMock(GlobalsFactory::class);
 
-        // Instantiate the runtime
-        $this->runtime = new WaffleRuntime();
+        // Instantiate the runtime with mocked dependencies
+        $this->runtime = new WaffleRuntime($this->globalsFactory, $this->emitter);
     }
 
-    public function testRunOrchestratesRequestLifecycleCorrectly(): void
+    public function testLoopOrchestratesRequestLifecycleCorrectly(): void
     {
-        // 1. Setup Expectations
+        // 1. Setup Expectations for Boot (Called Once)
+        $this->kernel->expects($this->once())->method('boot')->willReturnSelf();
 
-        // Dummy response object to be returned by the kernel
+        $this->kernel->expects($this->once())->method('configure');
+
+        // 2. Setup Expectations for Loop (Called Once in CLI fallback)
+
+        // Factory creates the request
+        $this->globalsFactory->expects($this->once())->method('createFromGlobals')->willReturn($this->request);
+
+        // Dummy response object
         $response = $this->createStub(ResponseInterface::class);
 
-        // Expect the Kernel to handle the specific request and return our dummy response
+        // Kernel handles the request
         $this->kernel
             ->expects($this->once())
             ->method('handle')
             ->with($this->equalTo($this->request))
             ->willReturn($response);
 
-        // Expect the Emitter to emit the exact response returned by the kernel
-        $this->emitter
-            ->expects($this->once())
-            ->method('emit')
-            ->with($this->equalTo($response));
+        // Emitter emits the response
+        $this->emitter->expects($this->once())->method('emit')->with($this->equalTo($response));
 
-        // 2. Execution
-        $this->runtime->run($this->kernel, $this->request, $this->emitter);
+        // 3. Execution
+        // Since we are not in FrankenPHP (function doesn't exist), it executes once and breaks.
+        $this->runtime->loop($this->kernel);
+
+        $this->kernel->reset();
     }
 }
