@@ -71,4 +71,7 @@ ignore = [
         "tests/",
         "src/",
     ] },
+    { code = "property-type-coercion", in = [
+        "tests/",
+    ] },
 ]
