@@ -24,6 +24,7 @@ namespace Waffle\Commons\Runtime {
 }
 
 namespace WaffleTests\Commons\Runtime {
+    use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
     use PHPUnit\Framework\MockObject\MockObject;
     use Psr\Http\Message\ResponseInterface;
     use Psr\Http\Message\ServerRequestInterface;
@@ -124,6 +125,7 @@ namespace WaffleTests\Commons\Runtime {
             static::assertSame(4, WorkerModeMockState::$handleInvocations);
         }
 
+        #[AllowMockObjectsWithoutExpectations]
         public function testWorkerModeTriggersGcEveryFiftyRequests(): void
         {
             WorkerModeMockState::$frankenphpAvailable = true;
