@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53e36299b4ef570ff26df9273c08ee76",
+    "content-hash": "2c203e4858bee283506bc5c29137b5a0",
     "packages": [
         {
             "name": "psr/cache",
@@ -482,17 +482,11 @@
         },
         {
             "name": "waffle-commons/contracts",
-            "version": "0.1.0-alpha5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "47ad1c565b6144432fb9ecf9bd2e0c0c27206060"
-            },
+            "version": "0.1.0-beta0",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/47ad1c565b6144432fb9ecf9bd2e0c0c27206060",
-                "reference": "47ad1c565b6144432fb9ecf9bd2e0c0c27206060",
-                "shasum": ""
+                "type": "path",
+                "url": "../contracts",
+                "reference": "717c96475f01a5550402a4a4c7d509d82b173a7e"
             },
             "require": {
                 "php": "^8.5",
@@ -518,7 +512,51 @@
                     "Waffle\\Commons\\Contracts\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Contracts\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "guard": [
+                    "vendor/bin/mago guard"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer",
+                    "@guard"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -529,31 +567,24 @@
                 }
             ],
             "description": "Contracts component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/contracts/issues",
-                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha5"
-            },
-            "time": "2026-05-02T05:56:30+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "waffle-commons/http",
-            "version": "0.1.0-alpha5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/http.git",
-                "reference": "c5cf1544a12c9dc27a691a1ffb374bff47e1a1e6"
-            },
+            "version": "0.1.0-beta0",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/http/zipball/c5cf1544a12c9dc27a691a1ffb374bff47e1a1e6",
-                "reference": "c5cf1544a12c9dc27a691a1ffb374bff47e1a1e6",
-                "shasum": ""
+                "type": "path",
+                "url": "../http",
+                "reference": "1e708c0bb6ed6b2fcfc75b98e2fb0d0700dd0df6"
             },
             "require": {
                 "php": "^8.5",
                 "psr/http-factory": "^1.1",
                 "psr/http-message": "^2.0",
-                "waffle-commons/contracts": "^0.1.0-alpha6"
+                "waffle-commons/contracts": "self.version"
             },
             "require-dev": {
                 "carthage-software/mago": "^1.0.0-rc",
@@ -568,7 +599,51 @@
                     "Waffle\\Commons\\Http\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Http\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "guard": [
+                    "vendor/bin/mago guard"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer",
+                    "@guard"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -579,11 +654,10 @@
                 }
             ],
             "description": "Http component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/http/issues",
-                "source": "https://github.com/waffle-commons/http/tree/0.1.0-alpha5"
-            },
-            "time": "2026-05-03T02:08:45+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         }
     ],
     "packages-dev": [
@@ -6027,8 +6101,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "carthage-software/mago": 5,
-        "waffle-commons/contracts": 15,
-        "waffle-commons/http": 15
+        "waffle-commons/contracts": 10,
+        "waffle-commons/http": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

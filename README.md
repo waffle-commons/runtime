@@ -9,7 +9,11 @@
 Waffle Runtime Component
 ========================
 
-The **Waffle Runtime** is the agnostic orchestration layer of the Waffle framework. It is responsible for gluing the **Kernel**, **Request**, and **Response Emitter** together to execute the application lifecycle.
+> **Release:** `v0.1.0-beta0`
+
+`WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back gracefully to a single-shot execution under the classic PHP SAPI when `frankenphp_handle_request()` is unavailable.
+
+The runtime contains **no concrete framework dependencies** — it only knows about the `KernelInterface`, `ResponseEmitterInterface`, and the `GlobalsFactory` shape. Everything else is injected.
 
 ## 📦 Installation
 
@@ -17,91 +21,64 @@ The **Waffle Runtime** is the agnostic orchestration layer of the Waffle framewo
 composer require waffle-commons/runtime
 ```
 
-## 🚀 Usage
+## 🧱 Surface
 
-The Runtime is typically used in your application's entry point (`public/index.php`).
+A single class: `Waffle\Commons\Runtime\WaffleRuntime` implementing `Waffle\Commons\Contracts\Runtime\RuntimeInterface`.
 
-It requires a fully configured `KernelInterface`, a `ServerRequestInterface`, and a `ResponseEmitterInterface`.
+```php
+public function __construct(
+    ?GlobalsFactory $globalsFactory = null,    // defaults to new GlobalsFactory()
+    ?ResponseEmitterInterface $emitter = null, // defaults to new ResponseEmitter()
+);
 
-### Example (`public/index.php`)
+public function loop(KernelInterface $kernel, int $maxRequests = 500): void;
+```
+
+## 🚀 Bootstrap (the entire `public/index.php`)
 
 ```php
 <?php
-
 declare(strict_types=1);
 
-use Waffle\Commons\Config\Config;
-use Waffle\Commons\Container\Container;
-use Waffle\Commons\Http\Emitter\ResponseEmitter;
-use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Commons\Runtime\WaffleRuntime;
-use Waffle\Commons\Security\Security;
-use App\Kernel; // Your application Kernel
+use App\Factory\AppKernelFactory;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 define('APP_ROOT', dirname(__DIR__));
 
-// 1. Setup Infrastructure Dependencies
-// ------------------------------------
-// Create the Config (pointing to your config directory)
-$config = new Config(
-    configDir: APP_ROOT . '/config',
-    environment: getenv('APP_ENV') ?: 'prod'
-);
+$kernel = AppKernelFactory::create(env: getenv('APP_ENV') ?: 'prod', debug: false);
 
-// Create the Security implementation
-$security = new Security($config);
-
-// Create the DI Container
-$container = new Container();
-
-// 2. Setup the Kernel
-// -------------------
-$kernel = new Kernel();
-
-// Inject dependencies into the Kernel
-// (The Kernel needs these to boot and configure the system)
-$kernel->setConfiguration($config);
-$kernel->setSecurity($security);
-$kernel->setContainerImplementation($container);
-
-// 3. Create Request & Emitter
-// ---------------------------
-$requestFactory = new GlobalsFactory();
-$request = $requestFactory->createServerRequestFromGlobals();
-
-$emitter = new ResponseEmitter();
-
-// 4. Instantiate the Runtime
-// --------------------------
-$runtime = new WaffleRuntime();
-
-// 5. Run the Application
-// ----------------------
-// The Runtime orchestrates the flow:
-// Request -> Kernel -> Response -> Emitter
-$runtime->run($kernel, $request, $emitter);
+(new WaffleRuntime())->loop($kernel, maxRequests: 500);
 ```
 
-## Features
+## 🔄 The loop contract
 
-*   **Agnostic Execution**: The Runtime doesn't know about your controllers or business logic. It only deals with PSR interfaces.
-*   **Decoupled Architecture**: Forces a clean separation between the Application (Kernel), the Input (Request), and the Output (Emitter).
-*   **PSR-7 & PSR-15 Compliant**: Built on top of standard HTTP message interfaces.
+1. **Boot once.** `$kernel->boot()->configure()` runs exactly once when the FrankenPHP worker starts.
+2. **Iterate.** Up to `$maxRequests` times, the runtime calls `frankenphp_handle_request($handler)` where `$handler`:
+   - rebuilds a PSR-7 `ServerRequest` from the *current* superglobals (FrankenPHP repopulates them per request),
+   - calls `$kernel->handle($request)` (the hot path),
+   - emits the response via the injected `ResponseEmitterInterface`.
+3. **Garbage-collect periodically.** Every 50 requests, `gc_collect_cycles()` is called to keep long-running worker memory bounded.
+4. **Reset on exit.** When the loop exits (max reached or FrankenPHP signaled stop), `$kernel->reset()` clears request-scoped state.
 
-## Testing
+If `frankenphp_handle_request` is not defined (classic SAPI), the runtime executes the handler once and exits — no infinite loop.
 
-To run the tests, use the following command:
+## 🐘 PHP 8.5 features used
+
+- `final class WaffleRuntime` — no inheritance.
+- Typed nullable constructor parameters with defaults built from `Waffle\Commons\Http\*` factories.
+- First-class callable closure in the handler block.
+- Typed `KernelInterface` + `ResponseEmitterInterface` + `GlobalsFactory` dependencies.
+
+## 🧪 Testing
 
 ```bash
-composer tests
+docker exec -w /waffle-commons/runtime waffle-dev composer tests
 ```
 
-## Contributing
+The `WaffleRuntimeWorkerModeTest` namespaces the production namespace to override `frankenphp_handle_request` via `php-mock-phpunit`; it is listed in `mago.toml [guard].excludes`.
 
-Contributions are welcome! Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+## 📄 License
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
+MIT — see [LICENSE.md](./LICENSE.md).
