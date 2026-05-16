@@ -64,11 +64,11 @@ class WaffleRuntimeTest extends AbstractTestCase
         $this->kernel
             ->expects($this->once())
             ->method('handle')
-            ->with($this->equalTo($this->request))
+            ->with(static::equalTo($this->request))
             ->willReturn($response);
 
         // Emitter emits the response
-        $this->emitter->expects($this->once())->method('emit')->with($this->equalTo($response));
+        $this->emitter->expects($this->once())->method('emit')->with(static::equalTo($response));
 
         // 3. Execution
         // Since we are not in FrankenPHP (function doesn't exist), it executes once and breaks.

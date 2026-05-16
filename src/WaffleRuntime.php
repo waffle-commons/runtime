@@ -53,11 +53,14 @@ final class WaffleRuntime implements RuntimeInterface
                 $this->emitter->emit($response);
             };
 
-            // A. FrankenPHP: Pause execution and wait for a request
-            $running = \function_exists('frankenphp_handle_request') ? \frankenphp_handle_request($handler) : false; // If function missing, we are not in worker mode -> Exit
+            // A. FrankenPHP: Pause execution and wait for a request.
+            // Unqualified calls allow namespace-level test shims to override these without
+            // affecting production behavior (PHP falls back to the global function when no
+            // namespace-local definition exists).
+            $running = function_exists('frankenphp_handle_request') ? frankenphp_handle_request($handler) : false;
 
             // Fallback: If not running under FrankenPHP worker, execute once and break
-            if (!\function_exists('frankenphp_handle_request')) {
+            if (!function_exists('frankenphp_handle_request')) {
                 $handler();
                 break;
             }
