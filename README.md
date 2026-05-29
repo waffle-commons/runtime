@@ -9,7 +9,7 @@
 Waffle Runtime Component
 ========================
 
-> **Release:** `v0.1.0-beta1`
+> **Release:** `v0.1.0-beta2` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 `WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back gracefully to a single-shot execution under the classic PHP SAPI when `frankenphp_handle_request()` is unavailable.
 
@@ -70,6 +70,22 @@ If `frankenphp_handle_request` is not defined (classic SAPI), the runtime execut
 - Typed nullable constructor parameters with defaults built from `Waffle\Commons\Http\*` factories.
 - First-class callable closure in the handler block.
 - Typed `KernelInterface` + `ResponseEmitterInterface` + `GlobalsFactory` dependencies.
+
+## 🧭 Architectural boundary (`mago guard`)
+
+An active dependency **perimeter** is enforced on every CI run by `vendor/bin/mago guard` (bundled into `composer mago`; zero baselines). The rules live in [`mago.toml`](./mago.toml) under `[guard.perimeter]` — a forbidden `use` statement fails the build, not a reviewer.
+
+Production code under `Waffle\Commons\Runtime` may depend **only** on:
+
+- `Waffle\Commons\Runtime\**` — itself
+- `Waffle\Commons\Contracts\**` — the shared contracts package, the primary Waffle dependency
+- `Waffle\Commons\Http\**` — concrete PSR-7/17 request + response objects needed to drive the worker loop
+- `Psr\**` — PSR interfaces (PSR-7 / PSR-17)
+- `@global` + `Psl\**` — PHP core (including the FrankenPHP `frankenphp_handle_request` global) and the PHP Standard Library
+
+Test code under `WaffleTests\Commons\Runtime` is unrestricted (`@all`); `WaffleRuntimeWorkerModeTest` is listed in `[guard].excludes` because it re-declares the production namespace to stub `frankenphp_handle_request`. Structural rules are guarded too: interfaces must be named `*Interface`, `Exception\**` classes must end in `*Exception`, and any `Enum\**` namespace may hold only `enum` declarations.
+
+Contract-first, component-agnostic by construction: components compose through `waffle-commons/contracts` (plus the explicitly-permitted `http`), never ad-hoc through one another.
 
 ## 🧪 Testing
 
