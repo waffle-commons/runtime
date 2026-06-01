@@ -114,7 +114,9 @@ namespace WaffleTests\Commons\Runtime {
             $this->kernel->expects($this->once())->method('boot')->willReturnSelf();
             $this->kernel->expects($this->once())->method('configure');
             $this->kernel->expects($this->exactly(3))->method('handle')->willReturn($response);
-            $this->kernel->expects($this->once())->method('reset');
+            // ΔM=0: reset() runs once per handled request (in the handler's finally),
+            // never once at worker shutdown — so 3 handled requests => 3 resets.
+            $this->kernel->expects($this->exactly(3))->method('reset');
 
             $this->globalsFactory->expects($this->exactly(3))->method('createFromGlobals')->willReturn($request);
             $this->emitter->expects($this->exactly(3))->method('emit')->with($response);
