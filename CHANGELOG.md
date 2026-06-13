@@ -13,6 +13,7 @@ Released in lockstep with the Waffle Commons umbrella tag.
 - `Trace\ConnectionTracker` — a request-scoped, dev-only registry of open PDO/Redis/stream connections (declares `implements ConnectionTrackerInterface, ResettableInterface` directly); feeds the orphaned-connection tracer (DIAG-03).
 
 ### Changed
+- Perimeter restored: `WaffleRuntime` now depends only on `contracts` — `GlobalsFactory` / `ResponseEmitter` are injected via `GlobalsFactoryInterface` / `ResponseEmitterInterface` (constructor-required) and `waffle-commons/http` is dropped from `require`; concrete wiring moves to the app bootstrap.
 - Worker-safety migration to igor-php 0.7 (`#[WorkerSafe]`).
 
 ## [0.1.0-beta3] — 2026-06-07

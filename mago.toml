@@ -31,7 +31,6 @@ namespace = "Waffle\\Commons\\Runtime"
 permit = [
     "Waffle\\Commons\\Runtime\\**",
     "Waffle\\Commons\\Contracts\\**",
-    "Waffle\\Commons\\Http\\**",
     "@layer:core",
     "@layer:psr",
 ]
