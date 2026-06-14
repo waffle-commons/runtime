@@ -24,7 +24,7 @@ final class IgorAuditConfig
     /** Trimmed, non-empty path to the audit script; validated on write. */
     public string $scriptPath {
         set(string $value) {
-            $trimmed = trim($value);
+            $trimmed = mb_trim($value);
             if ($trimmed === '') {
                 throw new ValidationException('The audit script path must not be empty.', 'scriptPath');
             }

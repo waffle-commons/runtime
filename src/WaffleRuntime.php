@@ -8,10 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Core\TerminableInterface;
+use Waffle\Commons\Contracts\Http\GlobalsFactoryInterface;
 use Waffle\Commons\Contracts\Http\ResponseEmitterInterface;
 use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
-use Waffle\Commons\Http\Emitter\ResponseEmitter;
-use Waffle\Commons\Http\Factory\GlobalsFactory;
 
 /**
  * WaffleRuntime is a purely agnostic application runner for FrankenPHP worker mode.
@@ -37,13 +36,13 @@ final class WaffleRuntime implements RuntimeInterface
      */
     private const int GC_INTERVAL = 50;
 
-    private readonly GlobalsFactory $globalsFactory;
+    private readonly GlobalsFactoryInterface $globalsFactory;
     private readonly ResponseEmitterInterface $emitter;
 
-    public function __construct(?GlobalsFactory $globalsFactory = null, ?ResponseEmitterInterface $emitter = null)
+    public function __construct(GlobalsFactoryInterface $globalsFactory, ResponseEmitterInterface $emitter)
     {
-        $this->globalsFactory = $globalsFactory ?? new GlobalsFactory();
-        $this->emitter = $emitter ?? new ResponseEmitter();
+        $this->globalsFactory = $globalsFactory;
+        $this->emitter = $emitter;
     }
 
     #[\Override]

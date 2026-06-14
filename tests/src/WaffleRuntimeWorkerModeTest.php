@@ -29,8 +29,8 @@ namespace WaffleTests\Commons\Runtime {
     use Psr\Http\Message\ResponseInterface;
     use Psr\Http\Message\ServerRequestInterface;
     use Waffle\Commons\Contracts\Core\KernelInterface;
+    use Waffle\Commons\Contracts\Http\GlobalsFactoryInterface;
     use Waffle\Commons\Contracts\Http\ResponseEmitterInterface;
-    use Waffle\Commons\Http\Factory\GlobalsFactory;
     use Waffle\Commons\Runtime\WaffleRuntime;
 
     /**
@@ -81,7 +81,7 @@ namespace WaffleTests\Commons\Runtime {
         private $kernel;
         /** @var ResponseEmitterInterface&MockObject */
         private $emitter;
-        /** @var GlobalsFactory&MockObject */
+        /** @var GlobalsFactoryInterface&MockObject */
         private $globalsFactory;
 
         #[\Override]
@@ -92,7 +92,7 @@ namespace WaffleTests\Commons\Runtime {
 
             $this->kernel = $this->createMock(KernelInterface::class);
             $this->emitter = $this->createMock(ResponseEmitterInterface::class);
-            $this->globalsFactory = $this->createMock(GlobalsFactory::class);
+            $this->globalsFactory = $this->createMock(GlobalsFactoryInterface::class);
         }
 
         #[\Override]

@@ -10,11 +10,11 @@
 Waffle Runtime Component
 ========================
 
-> **Release:** `0.1.0-beta3` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta4` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 `WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back gracefully to a single-shot execution under the classic PHP SAPI when `frankenphp_handle_request()` is unavailable.
 
-The runtime contains **no concrete framework dependencies** — it only knows about the `KernelInterface`, `ResponseEmitterInterface`, and the `GlobalsFactory` shape. Everything else is injected.
+The runtime contains **no concrete framework dependencies** — it knows only the `contracts` interfaces `KernelInterface`, `ResponseEmitterInterface`, and `GlobalsFactoryInterface`. The concrete `GlobalsFactory` / `ResponseEmitter` (from `http`) are injected by the application.
 
 ## 📦 Installation
 
@@ -28,8 +28,8 @@ A single class: `Waffle\Commons\Runtime\WaffleRuntime` implementing `Waffle\Comm
 
 ```php
 public function __construct(
-    ?GlobalsFactory $globalsFactory = null,    // defaults to new GlobalsFactory()
-    ?ResponseEmitterInterface $emitter = null, // defaults to new ResponseEmitter()
+    GlobalsFactoryInterface $globalsFactory,   // required — wired by the app bootstrap
+    ResponseEmitterInterface $emitter,         // required — wired by the app bootstrap
 );
 
 public function loop(KernelInterface $kernel, int $maxRequests = 500): void;
@@ -41,6 +41,8 @@ public function loop(KernelInterface $kernel, int $maxRequests = 500): void;
 <?php
 declare(strict_types=1);
 
+use Waffle\Commons\Http\Emitter\ResponseEmitter;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Commons\Runtime\WaffleRuntime;
 use App\Factory\AppKernelFactory;
 
@@ -50,7 +52,8 @@ define('APP_ROOT', dirname(__DIR__));
 
 $kernel = AppKernelFactory::create(env: getenv('APP_ENV') ?: 'prod', debug: false);
 
-(new WaffleRuntime())->loop($kernel, maxRequests: 500);
+// The app wires the concrete http factory + emitter into the agnostic runtime.
+(new WaffleRuntime(new GlobalsFactory(), new ResponseEmitter()))->loop($kernel, maxRequests: 500);
 ```
 
 ## 🔄 The loop contract
@@ -68,9 +71,9 @@ If `frankenphp_handle_request` is not defined (classic SAPI), the runtime execut
 ## 🐘 PHP 8.5 features used
 
 - `final class WaffleRuntime` — no inheritance.
-- Typed nullable constructor parameters with defaults built from `Waffle\Commons\Http\*` factories.
+- Typed constructor parameters injected via `contracts` interfaces (no concrete defaults).
 - First-class callable closure in the handler block.
-- Typed `KernelInterface` + `ResponseEmitterInterface` + `GlobalsFactory` dependencies.
+- Typed `KernelInterface` + `ResponseEmitterInterface` + `GlobalsFactoryInterface` dependencies.
 
 ## 🧭 Architectural boundary (`mago guard`)
 
@@ -79,14 +82,13 @@ An active dependency **perimeter** is enforced on every CI run by `vendor/bin/ma
 Production code under `Waffle\Commons\Runtime` may depend **only** on:
 
 - `Waffle\Commons\Runtime\**` — itself
-- `Waffle\Commons\Contracts\**` — the shared contracts package, the primary Waffle dependency
-- `Waffle\Commons\Http\**` — concrete PSR-7/17 request + response objects needed to drive the worker loop
+- `Waffle\Commons\Contracts\**` — the shared contracts package, the only Waffle dependency
 - `Psr\**` — PSR interfaces (PSR-7 / PSR-17)
 - `@global` + `Psl\**` — PHP core (including the FrankenPHP `frankenphp_handle_request` global) and the PHP Standard Library
 
 Test code under `WaffleTests\Commons\Runtime` is unrestricted (`@all`); `WaffleRuntimeWorkerModeTest` is listed in `[guard].excludes` because it re-declares the production namespace to stub `frankenphp_handle_request`. Structural rules are guarded too: interfaces must be named `*Interface`, `Exception\**` classes must end in `*Exception`, and any `Enum\**` namespace may hold only `enum` declarations.
 
-Contract-first, component-agnostic by construction: components compose through `waffle-commons/contracts` (plus the explicitly-permitted `http`), never ad-hoc through one another.
+Contract-first, component-agnostic by construction: components compose through `waffle-commons/contracts`, never ad-hoc through one another.
 
 ## 🧪 Testing
 
