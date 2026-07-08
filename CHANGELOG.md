@@ -5,6 +5,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
+## [0.1.0-beta5] — 2026-07-08
+
+**Theme: static-analysis hardening.**
+
+### Changed
+- Enabled the Mago `cyclomatic-complexity` linter rule (`mago.toml`) with a `threshold = 50` — it was previously `enabled = false`. Config-only change; no source modifications. Caps per-function branching complexity at the agreed ecosystem ratchet so future control-flow growth is flagged by the linter rather than a reviewer.
+
 ## [0.1.0-beta4] — 2026-06-13
 
 **Theme: worker-mode diagnostics.**
