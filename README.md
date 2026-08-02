@@ -98,6 +98,14 @@ docker exec -w /waffle-commons/runtime waffle-dev composer tests
 
 The `WaffleRuntimeWorkerModeTest` namespaces the production namespace to override `frankenphp_handle_request` via `php-mock-phpunit`; it is listed in `mago.toml [guard].excludes`.
 
+## 📚 Documentation
+
+Central framework docs (Diátaxis) for this component:
+
+- Reference: [`reference/runtime.md`](https://github.com/waffle-commons/documentation/blob/main/reference/runtime.md)
+- Explanation: [`explanation/performance.md`](https://github.com/waffle-commons/documentation/blob/main/explanation/performance.md)
+- Full documentation tree: [waffle-commons/documentation](https://github.com/waffle-commons/documentation)
+
 ## 📄 License
 
 MIT — see [LICENSE.md](./LICENSE.md).
