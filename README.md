@@ -10,7 +10,7 @@
 Waffle Runtime Component
 ========================
 
-> **Release:** `0.1.0-beta5` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta6` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 `WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back gracefully to a single-shot execution under the classic PHP SAPI when `frankenphp_handle_request()` is unavailable.
 
@@ -97,6 +97,14 @@ docker exec -w /waffle-commons/runtime waffle-dev composer tests
 ```
 
 The `WaffleRuntimeWorkerModeTest` namespaces the production namespace to override `frankenphp_handle_request` via `php-mock-phpunit`; it is listed in `mago.toml [guard].excludes`.
+
+## 📚 Documentation
+
+Central framework docs (Diátaxis) for this component:
+
+- Reference: [`reference/runtime.md`](https://github.com/waffle-commons/documentation/blob/main/reference/runtime.md)
+- Explanation: [`explanation/performance.md`](https://github.com/waffle-commons/documentation/blob/main/explanation/performance.md)
+- Full documentation tree: [waffle-commons/documentation](https://github.com/waffle-commons/documentation)
 
 ## 📄 License
 

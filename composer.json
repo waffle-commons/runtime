@@ -1,6 +1,6 @@
 {
     "name": "waffle-commons/runtime",
-    "description": "Runtime component for Waffle framework.",
+    "description": "The SAPI-agnostic runtime for Waffle Commons: boots a kernel and emits responses through contracts interfaces only, so the same application runs under FrankenPHP worker mode, PHP-FPM or the CLI server.",
     "type": "library",
     "license": "MIT",
     "autoload": {
