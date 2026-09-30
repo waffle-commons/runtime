@@ -5,6 +5,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
+## [Unreleased]
+
+### Fixed
+- **Worker-mode detection works in FrankenPHP classic mode and on every FrankenPHP version.**
+  - Classic mode used to fail every request with HTTP 500: the runtime called `frankenphp_handle_request()`
+    whenever the function existed. It now detects worker mode and, outside it, serves exactly one request.
+  - The detection reads the `FRANKENPHP_WORKER` process variable first. On FrankenPHP versions that do not
+    export it (measured: 1.12.2), that alone left every worker in a restart loop, each one serving a bogus
+    boot-time request and exiting. When the variable is absent, the first `frankenphp_handle_request()` call
+    now settles the mode: FrankenPHP serves a request in worker mode, and refuses with a `RuntimeException`
+    before touching the handler in classic mode. A handler failure during that call still propagates, and a
+    shutdown before the first request serves nothing.
+  - Verified on real FrankenPHP 1.12.2 and 1.12.7, in worker and classic mode.
+
+### Documentation
+- The README's loop contract now states that `$kernel->reset()` runs after every request, in the handler's
+  `finally`, rather than when the loop exits.
+
 ## [0.1.0-beta6] — 2026-09
 
 **Theme: documentation.**
