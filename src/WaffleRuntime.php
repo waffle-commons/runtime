@@ -14,6 +14,8 @@ use Waffle\Commons\Contracts\Runtime\RuntimeInterface;
 
 /**
  * WaffleRuntime is a purely agnostic application runner for FrankenPHP worker mode.
+ * Outside worker mode (CLI, tests, FrankenPHP classic mode) it handles exactly one
+ * request per invocation, so the same front controller works in both modes.
  *
  * Its sole responsibility is to orchestrate the request lifecycle:
  * 1. Boot the Kernel ONCE when the worker starts.
@@ -97,9 +99,11 @@ final class WaffleRuntime implements RuntimeInterface
             // Unqualified calls let namespace-level test shims override these;
             // PHP falls back to the global function when no namespace-local
             // definition exists, so production behavior is unaffected.
-            if (!function_exists('frankenphp_handle_request')) {
-                // Non-worker SAPI (CLI/test): run exactly once — the reset still
-                // happens inside the handler's finally — then leave.
+            if (!function_exists('frankenphp_handle_request') || !self::runsAsWorker()) {
+                // Not a worker: a non-FrankenPHP SAPI (CLI/test), or FrankenPHP in
+                // classic mode — where frankenphp_handle_request() exists but throws.
+                // Handle exactly the one current request (the reset still happens
+                // inside the handler's finally), then leave.
                 $handler();
                 break;
             }
@@ -116,6 +120,19 @@ final class WaffleRuntime implements RuntimeInterface
                 gc_collect_cycles();
             }
         } while ($requestCount < $maxRequests);
+    }
+
+    /**
+     * FrankenPHP exports FRANKENPHP_WORKER=1 to the process environment of worker
+     * scripts only — it is readable at boot and inside every request, and absent
+     * in classic mode. The process environment, not $_SERVER: the request
+     * superglobals are repopulated per request and no longer carry the flag.
+     */
+    private static function runsAsWorker(): bool
+    {
+        $flag = getenv('FRANKENPHP_WORKER');
+
+        return $flag !== false && $flag !== '' && $flag !== '0';
     }
 
     /**
