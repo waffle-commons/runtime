@@ -10,7 +10,7 @@
 Waffle Runtime Component
 ========================
 
-> **Release:** `0.1.0-beta6` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta7` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 `WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back to a single-shot execution outside it — under another SAPI, or FrankenPHP in classic mode.
 
