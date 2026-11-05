@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Core\TerminableInterface;
 use Waffle\Commons\Contracts\Http\GlobalsFactoryInterface;
@@ -90,7 +91,8 @@ class WaffleRuntimeTest extends AbstractTestCase
         // optional post-response capability. The runtime must drive terminate()
         // once per request — after emit(), before reset() — with the handled
         // request/response pair.
-        $kernel = new class($response) implements KernelInterface, TerminableInterface {
+        $container = $this->createStub(ContainerInterface::class);
+        $kernel = new class($response, $container) implements KernelInterface, TerminableInterface {
             public int $bootCalls = 0;
             public int $handleCalls = 0;
             public int $resetCalls = 0;
@@ -101,6 +103,7 @@ class WaffleRuntimeTest extends AbstractTestCase
 
             public function __construct(
                 private readonly ResponseInterface $response,
+                public readonly ContainerInterface $container,
             ) {}
 
             #[\Override]

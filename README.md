@@ -10,9 +10,9 @@
 Waffle Runtime Component
 ========================
 
-> **Release:** `0.1.0-beta6` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta7` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
-`WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back gracefully to a single-shot execution under the classic PHP SAPI when `frankenphp_handle_request()` is unavailable.
+`WaffleRuntime` is the agnostic application runner. It owns the request loop in FrankenPHP worker mode and falls back to a single-shot execution outside it — under another SAPI, or FrankenPHP in classic mode.
 
 The runtime contains **no concrete framework dependencies** — it knows only the `contracts` interfaces `KernelInterface`, `ResponseEmitterInterface`, and `GlobalsFactoryInterface`. The concrete `GlobalsFactory` / `ResponseEmitter` (from `http`) are injected by the application.
 
@@ -59,14 +59,16 @@ $kernel = AppKernelFactory::create(env: getenv('APP_ENV') ?: 'prod', debug: fals
 ## 🔄 The loop contract
 
 1. **Boot once.** `$kernel->boot()->configure()` runs exactly once when the FrankenPHP worker starts.
-2. **Iterate.** Up to `$maxRequests` times, the runtime calls `frankenphp_handle_request($handler)` where `$handler`:
+2. **Iterate.** In worker mode, up to `$maxRequests` times, the runtime calls `frankenphp_handle_request($handler)` where `$handler`:
    - rebuilds a PSR-7 `ServerRequest` from the *current* superglobals (FrankenPHP repopulates them per request),
    - calls `$kernel->handle($request)` (the hot path),
    - emits the response via the injected `ResponseEmitterInterface`.
 3. **Garbage-collect periodically.** Every 50 requests, `gc_collect_cycles()` is called to keep long-running worker memory bounded.
-4. **Reset on exit.** When the loop exits (max reached or FrankenPHP signaled stop), `$kernel->reset()` clears request-scoped state.
+4. **Reset after every request.** The handler's `finally` calls `$kernel->reset()` and closes the request and response bodies, even when the request throws — nothing request-scoped waits for worker shutdown.
 
-If `frankenphp_handle_request` is not defined (classic SAPI), the runtime executes the handler once and exits — no infinite loop.
+**Worker-mode detection.** Outside worker mode the runtime executes the handler once and returns — no infinite loop:
+- without `frankenphp_handle_request()` (CLI, tests), directly;
+- under FrankenPHP, worker mode is certain when the `FRANKENPHP_WORKER` process variable is set (1.12.7 exports it). When it is absent — classic mode, or a FrankenPHP version that does not export it (measured: 1.12.2) — the first `frankenphp_handle_request()` call settles it. FrankenPHP serves a request in worker mode and refuses with a `RuntimeException` before touching the handler in classic mode. A handler failure during that call still propagates.
 
 ## 🐘 PHP 8.5 features used
 
